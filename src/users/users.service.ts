@@ -33,9 +33,13 @@ export class UsersService {
 
   async findAll() {
     const users = await this.databaseService.user.findMany({
-      include: {
-        tarefas: true
-      }
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        status: true,
+        tarefas: true, 
+      },
     })
 
     if (users.length == 0) {

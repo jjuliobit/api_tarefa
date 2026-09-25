@@ -8,26 +8,53 @@ export class TarefasService {
   constructor(private readonly databaseService: DatabaseService) { }
 
   async create(createTarefaDto: Prisma.TarefaCreateInput) {
-    this.databaseService.tarefa.create({ data: createTarefaDto })
-    return {
-      mensagem: "Tarefa cadastrada"
+    try {
+      const data = await this.databaseService.tarefa.create({ data: createTarefaDto })
+
+      return {
+        data,
+        mensagem: "Tarefa cadastrada"
+      }
+    } catch (erro) {
+      // console.log(erro)
     }
+
   }
 
   async findAll() {
-    const tarefaData = await this.databaseService.tarefa.findMany({})
+    const tarefaData = await this.databaseService.tarefa.findMany({
+      select: {
+        id: true,
+        titulo: true,
+        descricao: true,
+        status: true,
+        dataCriacao: true,
+        user: true,
+      },
+    })
 
     if (tarefaData.length == 0) {
       throw new NotFoundException('Tarefa não encontrado');
     }
 
-    return tarefaData
+    return {
+      tarefaData
+    }
   }
 
   async findOne(id: number) {
     try {
       const tarefaData = await this.databaseService.tarefa.findUnique({
-        where: { id }
+        where: { id },
+        select: {
+          id: true,
+          titulo: true,
+          descricao: true,
+          concluida: true,
+          status: true,
+          dataCriacao: true,
+          user: true
+        }
       });
 
       if (!tarefaData) {
@@ -48,7 +75,7 @@ export class TarefasService {
       data: updateTarefaDto
     });
 
-    if(!tarefaData) {
+    if (!tarefaData) {
       throw new NotFoundException(`Tarefa com ID ${id} não encontrada`);
     }
 
@@ -60,10 +87,12 @@ export class TarefasService {
       where: { id }
     });
 
-    if(!tarefaData) {
+    if (!tarefaData) {
       throw new NotFoundException(`Tarefa com ID ${id} não encontrada`);
     }
 
-    return tarefaData
+    return {
+      mensagem: `A tarefa de ${tarefaData.userId} foi excluido.`
+    }
   }
 }
