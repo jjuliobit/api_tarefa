@@ -28,6 +28,11 @@ export class AuthService {
       throw new UnauthorizedException("Senha incorreta")
     }
 
+
+    if(user.status === false) {
+      throw new UnauthorizedException("O usuario desativado")
+    }
+
     const payload = {
       sub: user.id,
       email: user.email
