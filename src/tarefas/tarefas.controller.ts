@@ -18,16 +18,16 @@ export class TarefasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tarefasService.findOne(+id);
+    return this.tarefasService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTarefaDto: Prisma.TarefaUpdateInput) {
-    return this.tarefasService.update(+id, updateTarefaDto);
+    return this.tarefasService.update(id, updateTarefaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tarefasService.remove(+id);
+    return this.tarefasService.remove(id);
   }
 }

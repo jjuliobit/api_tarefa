@@ -42,7 +42,7 @@ export class TarefasService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     try {
       const tarefaData = await this.databaseService.tarefa.findUnique({
         where: { id },
@@ -67,7 +67,7 @@ export class TarefasService {
     }
   }
 
-  async update(id: number, updateTarefaDto: Prisma.TarefaUpdateInput) {
+  async update(id: string, updateTarefaDto: Prisma.TarefaUpdateInput) {
     const tarefaData = await this.databaseService.tarefa.update({
       where: {
         id,
@@ -82,7 +82,7 @@ export class TarefasService {
     return tarefaData
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const tarefaData = await this.databaseService.tarefa.delete({
       where: { id }
     });

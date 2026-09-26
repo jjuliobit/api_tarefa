@@ -8,21 +8,21 @@ datasource db {
 }
 
 model Tarefa {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(cuid())
   titulo      String
   descricao   String?
   concluida   Boolean  @default(false)
   status      String
   dataCriacao DateTime @default(now())
-  user User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  email       String @unique
-  senha       String
-  status      Boolean @default(false)
+  id      String   @id @default(cuid())
+  nome    String
+  email   String   @unique
+  senha   String
+  status  Boolean  @default(false)
   tarefas Tarefa[]
 }
